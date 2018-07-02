@@ -1,9 +1,9 @@
 import React from 'react';
 
-const App = () => (
-  <div>
-    <h1>Hello World</h1>
-  </div>
-);
+import './styles/global';
+
+import Sidebar from './components/sidebar';
+
+const App = () => <Sidebar />;
 
 export default App;
