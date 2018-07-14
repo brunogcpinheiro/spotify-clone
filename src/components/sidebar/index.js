@@ -7,7 +7,7 @@ import AddPlaylistIcon from '../../assets/images/add_playlist.svg';
 const Sidebar = () => (
   <Container>
     <div>
-      <Nav>
+      <Nav main>
         <li>
           <a href="#">Navegar</a>
         </li>
@@ -46,6 +46,15 @@ const Sidebar = () => (
         </li>
         <li>
           <a href="#">Podcasts</a>
+        </li>
+      </Nav>
+
+      <Nav>
+        <li>
+          <span>PLAYLISTS</span>
+        </li>
+        <li>
+          <a href="#">Melhores do rock</a>
         </li>
       </Nav>
     </div>
