@@ -1,62 +1,58 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as PlaylistsActions } from '../../store/ducks/playlists';
+
+import Loading from '../../components/loading';
 
 import { Container, Title, List, Playlist } from './styles';
 
-const Browse = () => (
-  <Container>
-    <Title>Navegar</Title>
+class Browse extends Component {
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        thumbnail: PropTypes.string,
+        description: PropTypes.string,
+      })),
+      loading: PropTypes.bool,
+    }).isRequired,
+  };
 
-    <List>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://ik.imagekit.io/imgpl/i1/tr:h-300/cd/hillsongunited_aftermath.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>Relaxe enquanto você programa ouvindo os top hists de todos os tempos!</p>
-      </Playlist>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://ik.imagekit.io/imgpl/i1/tr:h-300/cd/hillsongunited_aftermath.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>Relaxe enquanto você programa ouvindo os top hists de todos os tempos!</p>
-      </Playlist>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://ik.imagekit.io/imgpl/i1/tr:h-300/cd/hillsongunited_aftermath.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>Relaxe enquanto você programa ouvindo os top hists de todos os tempos!</p>
-      </Playlist>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://ik.imagekit.io/imgpl/i1/tr:h-300/cd/hillsongunited_aftermath.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>Relaxe enquanto você programa ouvindo os top hists de todos os tempos!</p>
-      </Playlist>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://ik.imagekit.io/imgpl/i1/tr:h-300/cd/hillsongunited_aftermath.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>Relaxe enquanto você programa ouvindo os top hists de todos os tempos!</p>
-      </Playlist>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://ik.imagekit.io/imgpl/i1/tr:h-300/cd/hillsongunited_aftermath.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>Relaxe enquanto você programa ouvindo os top hists de todos os tempos!</p>
-      </Playlist>
-    </List>
-  </Container>
-);
+  componentDidMount() {
+    this.props.getPlaylistsRequest();
+  }
 
-export default Browse;
+  render() {
+    return (
+      <Container>
+        <Title>Navegar {this.props.playlists.loading && <Loading />}</Title>
+
+        <List>
+          {this.props.playlists.data.map(playlist => (
+            <Playlist key={playlist.id} to={`playlists/${playlist.id}`}>
+              <img src={playlist.thumbnail} alt={playlist.title} />
+              <strong>{playlist.title}</strong>
+              <p>{playlist.description}</p>
+            </Playlist>
+          ))}
+        </List>
+      </Container>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  playlists: state.playlists,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(PlaylistsActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Browse);
