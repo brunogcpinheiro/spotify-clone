@@ -21,4 +21,8 @@ injectGlobal`
     background: #181818;
     color: #fff;
   }
+
+  button {
+    cursor: pointer;
+  }
 `;
